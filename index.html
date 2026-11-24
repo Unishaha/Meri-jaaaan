@@ -1,0 +1,807 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f8dced">
+<title>For My Jaan 💗</title>
+
+<style>
+:root {
+  --pink:#f2a4c9;
+  --lav:#b6a5ed;
+  --dark:#704967;
+  --glass:rgba(255,255,255,.78);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  color:var(--dark);
+  font-family:Georgia,serif;
+  background:linear-gradient(135deg,#fff0f7,#e9e4ff,#fff5fa);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+#world,#fireworks{
+  position:fixed;inset:0;width:100%;height:100%;
+  pointer-events:none;
+}
+#world{z-index:0}
+#fireworks{z-index:50}
+.sidebar{
+  position:fixed;z-index:20;left:0;top:0;bottom:0;
+  width:265px;padding:16px 12px;
+  background:rgba(255,250,254,.88);
+  backdrop-filter:blur(22px);
+  border-right:1px solid white;
+  display:flex;flex-direction:column;
+}
+.brand{font-size:25px;padding:10px;font-weight:bold}
+.tag{font:10px Arial;letter-spacing:2px;padding:0 10px 15px;color:#ad7898}
+#menu{overflow-y:auto;flex:1}
+.navbtn{
+  display:block;width:100%;border:0;background:transparent;
+  color:#76566d;text-align:left;padding:9px;
+  border-radius:11px;font:12px Arial;transition:.2s;
+}
+.navbtn:hover,.navbtn.active{
+  background:linear-gradient(110deg,#f8d6e8,#e5ddff);
+  transform:translateX(4px);
+}
+.navnum{opacity:.5;margin-right:10px}
+.sidefoot{padding:12px;font:11px Arial;color:#a17d95}
+main{position:relative;z-index:2;margin-left:265px;padding:22px 4% 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.eyebrow{font:10px Arial;letter-spacing:2px;color:#b77c9c}
+.btn{
+  border:1px solid #efd3e3;background:white;
+  padding:10px 15px;border-radius:30px;color:#80536f;
+  margin:4px;transition:.2s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px #9d668b22}
+.primary{background:linear-gradient(110deg,#ee9ec3,#b7a5ed);color:white;border:0}
+.hero{
+  margin-top:20px;padding:clamp(25px,5vw,60px);
+  min-height:340px;border:1px solid white;border-radius:30px;
+  background:linear-gradient(120deg,#ffffffdf,#ffe5f2df,#e9e3ffdf);
+  box-shadow:0 25px 65px #a8799c20;
+  position:relative;overflow:hidden;
+  transform-style:preserve-3d;transition:transform .2s;
+}
+.hero:after{
+  content:"♡";position:absolute;right:3%;top:-90px;
+  font-size:320px;color:#e9b4d433;
+  animation:float 8s ease-in-out infinite;
+}
+.hero h1{
+  font-size:clamp(48px,7vw,85px);line-height:.95;
+  margin:20px 0;color:#794a68;position:relative;z-index:1;
+}
+.hero p{max-width:600px;font:14px/1.9 Arial;color:#8d7083;position:relative;z-index:1}
+.pill{background:#fff9;padding:9px 14px;border-radius:30px;font:10px Arial}
+@keyframes float{50%{transform:translateY(22px) rotate(8deg)}}
+.sectionhead{margin:30px 0 14px}
+.sectionhead h2{font-size:32px;margin:7px 0}
+.sectionhead p{font:12px Arial;color:#a08094}
+.progress{height:6px;background:#f1dce8;border-radius:20px;overflow:hidden}
+.progress div{height:100%;background:linear-gradient(90deg,#ee9ec3,#b9a5ec);width:0;transition:.4s}
+.panel{
+  background:var(--glass);border:1px solid white;border-radius:25px;
+  padding:clamp(18px,4vw,36px);
+  box-shadow:0 18px 55px #9e71921c;backdrop-filter:blur(14px);
+  min-height:280px;animation:appear .4s;
+}
+.panel p{font:14px/1.8 Arial;color:#80677b}
+@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:18px}
+.tile{background:#fff9;border:1px solid #f1d9e7;border-radius:16px;padding:15px}
+.tile b{display:block;margin-bottom:8px;color:#9b6382}
+.field{width:min(100%,450px);padding:12px;border:1px solid #ebd1e0;border-radius:12px;margin:7px 0;background:white;color:#704c65}
+.output{font:14px/1.8 Arial;color:#995e83;white-space:pre-wrap;margin:14px 0}
+.gamebox{padding:16px;border:1px solid #efd9e7;border-radius:17px;background:#fff9;margin:12px 0}
+.board{display:grid;grid-template-columns:repeat(3,75px);gap:7px;margin:15px 0}
+.cell{height:75px;border:1px solid #e9c9dc;border-radius:14px;background:white;color:#9a6386;font-size:28px}
+.cards{display:grid;grid-template-columns:repeat(4,60px);gap:7px;margin:16px 0}
+.mem{height:60px;background:white;border:1px solid #ebccdf;border-radius:11px;font-size:22px}
+.big{font-size:38px}
+.letter{white-space:pre-line;font:15px/1.95 Georgia,serif!important;color:#75556d!important}
+footer{text-align:center;font:12px Arial;color:#a58598;padding:40px}
+@media(max-width:760px){
+ .sidebar{width:280px;transform:translateX(-110%);transition:.3s;box-shadow:12px 0 40px #65405b33}
+ .sidebar.open{transform:translateX(0)}
+ main{margin:0;padding:13px}
+ .hero h1{font-size:54px}
+}
+</style>
+</head>
+
+<body>
+<canvas id="world"></canvas>
+<canvas id="fireworks"></canvas>
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">For My Jaan 💗</div>
+  <div class="tag">A LITTLE UNIVERSE MADE FOR YOU</div>
+  <nav id="menu"></nav>
+  <div class="sidefoot">Made with wishes & stardust ✨</div>
+</aside>
+
+<main>
+  <div class="top">
+    <div>
+      <button class="btn" onclick="toggleMenu()">☰ Menu</button>
+      <span class="eyebrow">YOUR PERSONAL BIRTHDAY UNIVERSE</span>
+    </div>
+    <button class="btn" id="soundButton" onclick="toggleAmbient()">♫ Start music</button>
+  </div>
+
+  <section class="hero" id="hero">
+    <span class="pill">HAPPY BIRTHDAY ✨</span>
+    <h1>For My<br><em>Favorite</em><br>Person.</h1>
+    <p>A dreamy little universe filled with birthday wishes, games, surprises and a thousand reasons to celebrate you.</p>
+    <button class="btn primary" onclick="go(3)">Open your birthday letter 💌</button>
+    <button class="btn" onclick="celebrate()">Fireworks show 🎆</button>
+  </section>
+
+  <div class="sectionhead">
+    <span class="eyebrow">EXPLORE YOUR WORLD</span>
+    <h2 id="sectionTitle">Welcome</h2>
+    <p id="sectionNumber">Section 01 / 100</p>
+  </div>
+
+  <div class="progress"><div id="progress"></div></div>
+  <section class="panel" id="content"></section>
+  <footer>Happy Birthday, Meri Jaan 💗<br>May your days be full of wonder.</footer>
+</main>
+
+<script>
+const names = [
+"Welcome","Birthday Countdown","Birthday Wishes","The Birthday Letter","Compliment Garden",
+"Wish Jar","Memory Jar","Mood Garden","Daily Affirmation","Surprise Box",
+"Tic Tac Toe","Memory Match","Rock Paper Scissors","Number Guess","Reaction Challenge",
+"Math Duel","Typing Sprint","Simon Says","Dice Duel","Coin Toss",
+"Whack-a-Star","Word Scramble","Mini Quiz","Colour Memory","Lucky Wheel",
+"Fireworks Studio","Confetti Party","Star Catcher","Birthday Cake","Gift Unwrap",
+"Music Lounge","Sound Controls","Dream Board","Future Self","Adventure Planner",
+"Bucket List","Gratitude Garden","Kindness Challenge","Self-Care Pause","Positive Reminder",
+"Favourite Things","Colour Palette","Poetry Corner","Joke Corner","Riddle Room",
+"Story Generator","Secret Message","Birthday Playlist","Photo-Free Gallery","Virtual Postcard",
+"Friendship Notes","Dream Destination","Travel Bingo","Star Map","Galaxy Explorer",
+"Tesseract Lab","Mini Art Studio","Pattern Mixer","Emoji Story","Name Acrostic",
+"Birthday Calendar","Countdown Timer","Focus Corner","Study Break","Motivation Meter",
+"Compliment Wheel","Lucky Number","Treasure Hunt","Mystery Doors","Choose Your Path",
+"Birthday Checklist","Party Planner","Snack Picker","Outfit Colour Idea","Dance Break",
+"Breathing Bubble","Calm Space","Star Rating","Question of the Day","Would You Rather",
+"This or That","Two Truths","Memory Lane","Future Plans","Birthday Promise",
+"Open When Happy","Open When Sad","Open When Tired","Open When Unsure","Open When Proud",
+"The Big Cheer","One More Wish","A Year of Possibilities","Little Achievements","Your Strengths",
+"A Thank You Note","Birthday Certificate","Final Surprise","Keep Shining","Made Just for You"
+];
+
+const descriptions = [
+"Your birthday universe starts here.","A moment to celebrate.","A pocket full of good wishes.",
+"A letter written with care.","Plant a compliment.","Save a little dream.","Collect a happy thought.",
+"Choose your current mood.","A reminder for today.","A tiny surprise awaits.",
+"Two players, one board.","Find matching pairs.","A quick two-player duel.","Find the secret number.",
+"Test your reaction time.","Quick mental maths.","A tiny typing race.","Remember the sequence.",
+"Roll for the highest number.","Heads or tails?","Tap the star target.","Unscramble the word.",
+"A friendly knowledge quiz.","Remember the colour order.","Spin for a wish.","Light up the sky.",
+"Let the confetti fly.","Catch the falling stars.","Make a virtual cake.","Open your gift.",
+"A soft ambient soundscape.","Choose your sound level.","Imagine what's possible.","A note to future you.",
+"Plan a little adventure.","Things to try.","Notice the good things.","One kind action.",
+"Take a calm moment.","A gentle reminder.","Little favourites.","Pick a colour mood.",
+"A tiny poem.","A little laugh.","Solve a riddle.","A story seed.","Write a note.",
+"Song ideas.","A gallery of words, with no photos.","Send a warm thought.",
+"Celebrate friendship.","Pick a place to explore.","A travel-themed checklist.","A sky full of wishes.",
+"A little space adventure.","A 4D-inspired visual.","Make a colour pattern.","Mix shapes and colours.",
+"Tell a story with emoji.","A name poem.","Plan a celebration.","A short timer.",
+"One small goal.","A little reset.","How motivated are you?","Spin a compliment.",
+"Find a lucky number.","Find the hidden treasure.","Choose a door.","Pick a story path.",
+"Your celebration list.","Plan a tiny party.","Choose a treat.","A colour suggestion.",
+"Move to your own rhythm.","Breathe in and out.","A quiet corner.","Rate your birthday mood.",
+"A fun question.","Pick one.","Quick choices.","A guessing game.","A reflection page.",
+"A little plan.","A promise to yourself.","A happy-day note.","A gentle note.","A rest reminder.",
+"A courage note.","Celebrate progress.","A cheer just for you.","Another birthday wish.",
+"A new chapter.","Celebrate small wins.","Notice your strengths.","A little gratitude.",
+"A fun certificate.","One last surprise.","Keep being you.","This little universe is dedicated to you."
+];
+
+const wishes = [
+"May your days be filled with peace, kindness and happiness.",
+"May your dreams become plans and your plans become achievements.",
+"May you find joy in ordinary moments and courage in new beginnings.",
+"May you be surrounded by people who respect and encourage you.",
+"May this year bring new places, new skills and beautiful memories.",
+"May you always remember to be kind to yourself.",
+"May laughter find you often and hope stay close.",
+"May every little step bring you closer to something meaningful."
+];
+
+const letter = `Happy Birthday, meri jaan. 💗
+
+Today is a beautiful reason to pause and celebrate you. I wanted to create something more personal than an ordinary birthday greeting: a little universe filled with wishes, playful moments, surprises and kind reminders.
+
+I hope your morning begins with a peaceful heart and a smile. I hope the day brings your favourite little things, warm conversations, lovely surprises and people who make you feel appreciated.
+
+As a new year of your life begins, I wish you the courage to explore. There are so many experiences waiting for you: places you have never seen, skills you have not tried, stories you have not heard and dreams you have not even imagined yet.
+
+I hope you never feel pressured to have everything figured out. Life is not a race with one finish line. Everyone learns differently, grows differently and finds their way in their own time. Your journey belongs to you.
+
+I wish you friendships filled with respect, honesty, laughter and understanding. May you meet people who listen when you speak, encourage your ideas and make room for you to be yourself.
+
+I hope you keep finding happiness in simple things: a favourite song, a delicious snack, a colourful sky, a quiet evening, a funny message or a conversation that makes time disappear.
+
+May this year bring opportunities that help you learn and grow. I hope you discover new strengths, become more confident in your choices and feel proud of the effort you put into the things that matter.
+
+Please take care of yourself along the way. Rest when you need rest. Ask for support when things feel difficult. Make time for the hobbies and people that bring meaning to your days.
+
+I wish you courage for new beginnings, patience for slow progress and hope for uncertain days. May you always have the confidence to try, the humility to learn and the strength to begin again.
+
+I hope there are many reasons to laugh this year. I hope you collect funny stories, unexpected adventures, sweet memories and moments that make you smile long after they have passed.
+
+Thank you for being part of this little celebration. A birthday is not only about counting another year; it is also about appreciating how much possibility exists in the year ahead.
+
+Whenever a day feels confusing, take it one step at a time. You do not need to solve every problem immediately. Be patient with yourself and speak kindly to yourself.
+
+I hope you make room for dreams that excite you. Write them down, take a first step and let them grow as you grow. Some plans may change, and that is okay.
+
+May your birthday be filled with warmth, your year with opportunities and your future with possibilities. May you feel appreciated for who you are and encouraged in what you want to become.
+
+Happy Birthday once again, meri jaan. 🎂💗
+
+May this new chapter be gentle when you need peace, exciting when you need adventure and full of reasons to smile. Keep learning, keep dreaming, keep shining and never forget to celebrate yourself.
+
+With lots of birthday wishes, this little website is dedicated to you. Enjoy every page, every game and every surprise. HAPPY BIRTHDAY! ✨`;
+
+const menu=document.getElementById("menu");
+const content=document.getElementById("content");
+menu.innerHTML=names.map((name,i)=>`
+<button class="navbtn" onclick="go(${i})">
+<span class="navnum">${String(i+1).padStart(2,"0")}</span>${name}
+</button>`).join("");
+
+let active=0, notes=[];
+let ambientContext=null,ambientGain=null,ambientOn=false;
+let ttt=Array(9).fill(""),tttTurn="X",tttScore=[0,0];
+let memory=[],memOpen=[],memPlayer=0,memScore=[0,0],memBusy=false;
+let rpsScore=[0,0],secret=Math.ceil(Math.random()*30),numberPlayer=0;
+let mathPlayer=0,mathScore=[0,0],expected=0;
+let simonSequence=[],simonInput=[],simonLevel=0;
+let starScore=[0,0],diceValues=[null,null];
+
+function go(i){
+ active=i;
+ document.getElementById("sectionTitle").textContent=names[i];
+ document.getElementById("sectionNumber").textContent=`Section ${i+1} / 100`;
+ document.getElementById("progress").style.width=(i+1)+"%";
+ document.querySelectorAll(".navbtn").forEach((b,j)=>b.classList.toggle("active",i===j));
+ document.getElementById("sidebar").classList.remove("open");
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
+function out(s){let e=document.getElementById("out");if(e)e.textContent=s}
+function randomWish(){out(wishes[Math.floor(Math.random()*wishes.length)])}
+function noteBox(){return `<textarea class="field" id="note" rows="3" placeholder="Write something..."></textarea><br><button class="btn primary" onclick="saveNote()">Save note</button><p id="out" class="output"></p>`}
+function saveNote(){
+ let n=document.getElementById("note");
+ if(!n||!n.value.trim())return out("Write a little note first.");
+ notes.push(n.value.trim());out("Your note is saved for this visit 💗");
+}
+
+function render(){
+ let h=`<h2>${names[active]} ✨</h2><p>${descriptions[active]}</p>`;
+
+ if(active===0){
+  h+=`<p>Choose any of the 100 tabs. Explore games, creative corners, wishes and surprises.</p>
+  <button class="btn primary" onclick="go(3)">Read birthday letter 💌</button>
+  <button class="btn" onclick="celebrate()">Launch fireworks 🎆</button>
+  <div class="grid">${[10,11,12,14,17,25].map(i=>`
+  <div class="tile"><b>${names[i]}</b><small>${descriptions[i]}</small>
+  <br><button class="btn" onclick="go(${i})">Explore</button></div>`).join("")}</div>`;
+ }
+ else if(active===3){
+  h+=`<div class="letter">${letter}</div><button class="btn primary" onclick="window.print()">Print letter</button>`;
+ }
+ else if(active===10){
+  h+=`<div class="gamebox"><p>Player 1 = X · Player 2 = O</p>
+  <p id="gameStatus">Player ${tttTurn}'s turn</p>
+  <div class="board">${ttt.map((v,i)=>`<button class="cell" onclick="tttPlay(${i})">${v}</button>`).join("")}</div>
+  <p>Player 1: ${tttScore[0]} wins · Player 2: ${tttScore[1]} wins</p>
+  <button class="btn" onclick="tttReset()">Reset round</button></div>`;
+ }
+ else if(active===11){
+  if(!memory.length)resetMemory(false);
+  h+=`<div class="gamebox"><p>Two players take turns finding matching pairs.</p>
+  <p>Player ${memPlayer+1}'s turn · P1 ${memScore[0]} / P2 ${memScore[1]}</p>
+  <div class="cards">${memory.map((c,i)=>`<button class="mem" onclick="flipMemory(${i})">${c.open||c.done?c.v:"?"}</button>`).join("")}</div>
+  <button class="btn" onclick="resetMemory()">Reset game</button></div>`;
+ }
+ else if(active===12){
+  h+=`<div class="gamebox">
+  Player 1 <select id="r1" class="field"><option>Rock</option><option>Paper</option><option>Scissors</option></select><br>
+  Player 2 <select id="r2" class="field"><option>Rock</option><option>Paper</option><option>Scissors</option></select><br>
+  <button class="btn primary" onclick="playRPS()">Reveal choices</button>
+  <p id="out"></p><p>Player 1 ${rpsScore[0]} · Player 2 ${rpsScore[1]}</p>
+  <button class="btn" onclick="rpsScore=[0,0];render()">Reset score</button></div>`;
+ }
+ else if(active===13){
+  h+=`<div class="gamebox">Guess a number from 1 to 30. Players alternate.
+  <p id="numPlayer">Player ${numberPlayer+1}'s turn</p>
+  <input id="guess" class="field" type="number" min="1" max="30">
+  <button class="btn primary" onclick="guessNumber()">Guess</button><p id="out"></p>
+  <button class="btn" onclick="secret=Math.ceil(Math.random()*30);numberPlayer=0;render()">New number</button></div>`;
+ }
+ else if(active===14){
+  h+=`<div class="gamebox">Wait for green, then tap quickly.
+  <button class="btn primary" onclick="startReaction()">Start test</button>
+  <button class="btn" id="reactionTap" disabled onclick="tapReaction()">Tap!</button>
+  <p id="reactionResult" class="big">⏱️</p></div>`;
+ }
+ else if(active===15){
+  h+=`<div class="gamebox"><p id="mathQuestion">Player ${mathPlayer%2+1}: ${newMath()}</p>
+  <input id="mathAnswer" class="field" type="number">
+  <button class="btn primary" onclick="submitMath()">Submit</button>
+  <p id="out">P1 ${mathScore[0]} · P2 ${mathScore[1]}</p></div>`;
+ }
+ else if(active===16){
+  h+=`<div class="gamebox">Type this phrase: <b>birthday sparkle</b><br>
+  <input id="type1" class="field" placeholder="Player 1">
+  <input id="type2" class="field" placeholder="Player 2">
+  <button class="btn primary" onclick="checkTyping()">Check</button><p id="out"></p></div>`;
+ }
+ else if(active===17||active===23){
+  h+=`<div class="gamebox">Watch the sequence and repeat it.
+  <button class="btn primary" onclick="startSimon()">Start sequence</button>
+  <div class="grid">${[1,2,3,4].map(n=>`<button class="btn" onclick="simonTap(${n})">${n}</button>`).join("")}</div>
+  <p id="out"></p><p>Level ${simonLevel}</p></div>`;
+ }
+ else if(active===18){
+  h+=`<div class="gamebox"><button class="btn primary" onclick="rollDice(0)">Player 1 roll</button>
+  <button class="btn" onclick="rollDice(1)">Player 2 roll</button><p id="out" class="big"></p></div>`;
+ }
+ else if(active===19){
+  h+=`<div class="gamebox">Player 1 <select id="coin1" class="field"><option>Heads</option><option>Tails</option></select>
+  Player 2 <select id="coin2" class="field"><option>Heads</option><option>Tails</option></select>
+  <button class="btn primary" onclick="flipCoin()">Flip coin</button><p id="out"></p></div>`;
+ }
+ else if(active===20){
+  h+=`<div class="gamebox">First player to five stars wins.
+  <button class="btn primary" onclick="starTap(0)">Player 1 ⭐</button>
+  <button class="btn" onclick="starTap(1)">Player 2 ⭐</button><p id="out"></p></div>`;
+ }
+ else if(active===21){
+  h+=`<div class="gamebox">Unscramble this word: <b>RITBHADY</b><br>
+  <input id="scrambleAnswer" class="field">
+  <button class="btn primary" onclick="out(document.getElementById('scrambleAnswer').value.toLowerCase()==='birthday'?'Correct! 🎉':'Try again!')">Check</button><p id="out"></p></div>`;
+ }
+ else if(active===22){
+  h+=`<div class="gamebox">Which planet is known as the Red Planet?
+  <select id="quizAnswer" class="field"><option>Venus</option><option>Mars</option><option>Jupiter</option></select>
+  <button class="btn primary" onclick="out(document.getElementById('quizAnswer').value==='Mars'?'Correct! 🌟':'The answer is Mars.')">Answer</button><p id="out"></p></div>`;
+ }
+ else if(active===24||active===65){
+  h+=`<button class="btn primary" onclick="randomWish()">Spin for a wish</button><p id="out" class="output big"></p>`;
+ }
+ else if(active===25){
+  h+=`<p>Enjoy animated fireworks with a synthesized launch whistle, crackle and low boom.</p>
+  <button class="btn primary" onclick="celebrate()">Launch fireworks + sound 🎆</button>`;
+ }
+ else if(active===26||active===27||active===90||active===97){
+  h+=`<button class="btn primary" onclick="celebrate()">Celebrate! 🎉</button><p id="out"></p>`;
+ }
+ else if(active===28){
+  h+=`<div class="big" id="cake">🎂</div>
+  <button class="btn primary" onclick="addCandle()">Add candle</button><p id="out">Candles: 0</p>`;
+ }
+ else if(active===30||active===31){
+  h+=`<p>Browser-generated ambient sound. This is not a song or melody. Press the button to start.</p>
+  <button class="btn primary" onclick="toggleAmbient()">Start / stop ambient sound</button>
+  <p>Volume <input type="range" min="0" max=".3" step=".01" value=".12" oninput="setVolume(this.value)"></p>`;
+ }
+ else if(active===38||active===75){
+  h+=`<div class="gamebox"><div id="breath" class="big">Breathe</div>
+  <button class="btn primary" onclick="breathingGuide()">Start breathing guide</button></div>`;
+ }
+ else if(active===41){
+  h+=`<input type="color" class="field" value="#f2a4c9" oninput="document.documentElement.style.setProperty('--pink',this.value)">`;
+ }
+ else if(active===42){
+  h+=`<button class="btn primary" onclick="out('A little light, a brand-new day,\\nA thousand dreams along the way.\\nMay laughter bloom and worries cease,\\nMay every step bring joy and peace.')">Create poem</button><p id="out"></p>`;
+ }
+ else if(active===43){
+  h+=`<button class="btn primary" onclick="out('Why did the birthday cake go to school? It wanted to be a smartie! 🎂')">Tell me a joke</button><p id="out"></p>`;
+ }
+ else if(active===44){
+  h+=`What has hands but cannot clap?<br><button class="btn primary" onclick="out('A clock! 🕰️')">Reveal answer</button><p id="out"></p>`;
+ }
+ else if(active===48){
+  h+=`<div class="big">🌸 ✨ 🌙 💗 ⭐</div><p>This website intentionally uses no photos.</p>`;
+ }
+ else if(active===55){
+  h+=`<p>A rotating projected hypercube is drawn behind the website. It creates a 4D-inspired visual effect, not a full 4D game engine.</p>`;
+ }
+ else if(active===56||active===57){
+  h+=`<button class="btn primary" onclick="makeArt()">Generate abstract art</button><div id="art" class="grid"></div>`;
+ }
+ else if(active===58){
+  h+=`<button class="btn primary" onclick="out(['🌙🦋✨🌷','🎂🎉💗⭐','🚀🌌🪐✨','🐻🎀🎁💞'][Math.floor(Math.random()*4)])">Create emoji story</button><p id="out" class="big"></p>`;
+ }
+ else if(active===59){
+  h+=`<input id="acronym" class="field" placeholder="Enter a name">
+  <button class="btn primary" onclick="makeAcrostic()">Create acrostic</button><p id="out"></p>`;
+ }
+ else if(active===61||active===63){
+  h+=`<input id="seconds" type="number" class="field" value="30" min="1" max="600">
+  <button class="btn primary" onclick="startTimer()">Start timer</button><p id="out" class="big"></p>`;
+ }
+ else if(active===70){
+  h+=`<div>${["Make a wish","Enjoy a favourite treat","Play a game","Listen to music","Share a smile"].map(x=>`<label style="display:block;margin:12px"><input type="checkbox"> ${x}</label>`).join("")}</div>`;
+ }
+ else if(active===72){
+  h+=`<button class="btn primary" onclick="out(['Fruit bowl 🍓','Popcorn 🍿','Chocolate cake 🍰','Momo 🥟','Ice cream 🍨'][Math.floor(Math.random()*5)])">Pick a snack</button><p id="out"></p>`;
+ }
+ else if(active===74){
+  h+=`<button class="btn primary" onclick="dance()">Dance pulse</button><div id="dance" class="big">💃</div>`;
+ }
+ else if(active===77){
+  h+=`<input type="range" min="1" max="5" value="5" oninput="document.getElementById('rating').textContent='⭐'.repeat(this.value)">
+  <div id="rating" class="big">⭐⭐⭐⭐⭐</div>`;
+ }
+ else if(active===96){
+  h+=`<div class="gamebox" style="text-align:center;padding:35px">
+  <div class="big">🏆</div><h2>Official Birthday Star</h2>
+  <p>Presented for being wonderfully one of a kind.</p><b>Happy Birthday! 💗</b></div>
+  <button class="btn primary" onclick="window.print()">Print certificate</button>`;
+ }
+ else if(active===99){
+  h+=`<div class="big">💗🎂✨🌷</div><p>Keep shining, keep learning and keep making beautiful memories.</p>
+  <button class="btn primary" onclick="celebrate()">One last fireworks show</button>`;
+ }
+ else{
+  h+=`<div class="tile"><b>A little birthday reminder</b><small>${wishes[active%wishes.length]}</small></div>
+  ${noteBox()}<button class="btn" onclick="randomWish()">Show another wish</button>`;
+ }
+ content.innerHTML=h;
+}
+
+/* GAME 1: TIC TAC TOE */
+function winner(a){
+ const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+ for(const l of lines)if(a[l[0]]&&a[l[0]]===a[l[1]]&&a[l[1]]===a[l[2]])return a[l[0]];
+ return null;
+}
+function tttPlay(i){
+ if(ttt[i]||winner(ttt))return;
+ ttt[i]=tttTurn;
+ let w=winner(ttt);
+ if(w){tttScore[w==="X"?0:1]++;render();return}
+ if(ttt.every(Boolean)){render();out("It's a draw!");return}
+ tttTurn=tttTurn==="X"?"O":"X";render();
+}
+function tttReset(){ttt=Array(9).fill("");tttTurn="X";render()}
+
+/* GAME 2: MEMORY MATCH */
+function resetMemory(doRender=true){
+ const a=["🌸","⭐","🎂","💗","🌙","🎁","🦋","✨"];
+ memory=[...a,...a].sort(()=>Math.random()-.5).map(v=>({v,open:false,done:false}));
+ memOpen=[];memPlayer=0;memScore=[0,0];memBusy=false;
+ if(doRender)render();
+}
+function flipMemory(i){
+ if(memBusy||memory[i].open||memory[i].done)return;
+ memory[i].open=true;memOpen.push(i);render();
+ if(memOpen.length===2){
+  memBusy=true;
+  setTimeout(()=>{
+   let [a,b]=memOpen;
+   if(memory[a].v===memory[b].v){
+    memory[a].done=memory[b].done=true;memScore[memPlayer]++;
+   }else memPlayer=1-memPlayer;
+   memOpen=[];memBusy=false;render();
+  },700);
+ }
+}
+
+/* GAME 3: ROCK PAPER SCISSORS */
+function playRPS(){
+ let a=document.getElementById("r1").value,b=document.getElementById("r2").value;
+ if(a===b)out("It's a draw!");
+ else if((a==="Rock"&&b==="Scissors")||(a==="Paper"&&b==="Rock")||(a==="Scissors"&&b==="Paper")){
+  rpsScore[0]++;out("Player 1 wins this round!");
+ }else{rpsScore[1]++;out("Player 2 wins this round!")}
+}
+
+/* GAME 4: NUMBER GUESS */
+function guessNumber(){
+ let v=Number(document.getElementById("guess").value);
+ if(v===secret){out(`Player ${numberPlayer+1} found it! 🎉`);secret=Math.ceil(Math.random()*30);numberPlayer=0}
+ else{out(v<secret?"Too low!":"Too high!");numberPlayer=1-numberPlayer;document.getElementById("numPlayer").textContent=`Player ${numberPlayer+1}'s turn`}
+}
+
+/* GAME 5: REACTION */
+let reactionState="idle",reactionStart=0;
+function startReaction(){
+ reactionState="wait";
+ let b=document.getElementById("reactionTap");
+ b.disabled=true;
+ document.getElementById("reactionResult").textContent="Wait for green…";
+ setTimeout(()=>{
+  if(reactionState!=="wait")return;
+  reactionState="go";reactionStart=performance.now();b.disabled=false;b.style.background="#9cdbad";
+  document.getElementById("reactionResult").textContent="GO!";
+ },1500+Math.random()*2500);
+}
+function tapReaction(){
+ if(reactionState==="wait"){reactionState="idle";document.getElementById("reactionResult").textContent="Too soon!";return}
+ if(reactionState==="go"){
+  document.getElementById("reactionResult").textContent=Math.round(performance.now()-reactionStart)+" ms";
+  reactionState="done";document.getElementById("reactionTap").disabled=true;
+ }
+}
+
+/* GAME 6: MATH DUEL */
+function newMath(){
+ let a=2+Math.floor(Math.random()*18),b=2+Math.floor(Math.random()*12);
+ expected=a+b;return `${a} + ${b} = ?`;
+}
+function submitMath(){
+ if(Number(document.getElementById("mathAnswer").value)===expected)mathScore[mathPlayer%2]++;
+ mathPlayer++;
+ document.getElementById("mathQuestion").textContent=`Player ${mathPlayer%2+1}: ${newMath()}`;
+ document.getElementById("out").textContent=`P1 ${mathScore[0]} · P2 ${mathScore[1]}`;
+}
+
+/* GAME 7: TYPING */
+function checkTyping(){
+ const p="birthday sparkle";
+ let a=document.getElementById("type1").value===p;
+ let b=document.getElementById("type2").value===p;
+ out(`Player 1: ${a?"Complete!":"Not yet"} · Player 2: ${b?"Complete!":"Not yet"}`);
+}
+
+/* GAME 8: SIMON */
+function startSimon(){
+ simonSequence=[1+Math.floor(Math.random()*4)];simonInput=[];simonLevel=1;
+ out("Sequence: "+simonSequence.join(" → "));
+}
+function simonTap(n){
+ if(!simonSequence.length)return;
+ simonInput.push(n);
+ if(simonInput.at(-1)!==simonSequence[simonInput.length-1]){
+  out("Not quite! Press Start to try again.");simonSequence=[];return;
+ }
+ if(simonInput.length===simonSequence.length){
+  simonLevel++;simonSequence.push(1+Math.floor(Math.random()*4));simonInput=[];
+  out("Great! New sequence: "+simonSequence.join(" → "));
+ }
+}
+
+/* GAME 9: DICE DUEL */
+function rollDice(p){
+ diceValues[p]=1+Math.floor(Math.random()*6);
+ out(`Player 1: ${diceValues[0]??"—"} · Player 2: ${diceValues[1]??"—"} ${diceValues.every(Boolean)?(diceValues[0]===diceValues[1]?"Draw!":diceValues[0]>diceValues[1]?"Player 1 wins!":"Player 2 wins!"):""}`);
+ if(diceValues.every(Boolean))diceValues=[null,null];
+}
+
+/* GAME 10: COIN TOSS */
+function flipCoin(){
+ let result=Math.random()<.5?"Heads":"Tails";
+ let a=document.getElementById("coin1").value,b=document.getElementById("coin2").value;
+ out(`It landed ${result}! Player 1 ${a===result?"wins":"missed"} · Player 2 ${b===result?"wins":"missed"}`);
+}
+
+/* GAME 11: STAR TAP */
+let starScore=[0,0];
+function starTap(p){
+ starScore[p]++;
+ out(`⭐ Player 1 ${starScore[0]} · Player 2 ${starScore[1]} ${starScore[p]>=5?"— Player "+(p+1)+" wins!":""}`);
+ if(starScore[p]>=5)starScore=[0,0];
+}
+
+/* OTHER INTERACTIONS */
+function addCandle(){document.getElementById("cake").textContent+="🕯️";out("A candle added!")}
+function breathingGuide(){
+ let e=document.getElementById("breath"),i=0;
+ let steps=["Breathe in…","Hold gently…","Breathe out…"];
+ e.textContent=steps[0];
+ let t=setInterval(()=>{i=(i+1)%3;e.textContent=steps[i]},3000);
+ setTimeout(()=>clearInterval(t),12000);
+}
+function makeArt(){
+ document.getElementById("art").innerHTML=Array.from({length:12},()=>`
+ <div class="tile" style="height:75px;background:linear-gradient(${Math.random()*360}deg,hsl(${Math.random()*360} 70% 88%),hsl(${Math.random()*360} 70% 92%))"></div>`).join("");
+}
+function makeAcrostic(){
+ let n=(document.getElementById("acronym").value||"JAAN").toUpperCase().replace(/[^A-Z]/g,"");
+ let words=["Joyful","Amazing","Always growing","Nice","Adventurous","Never give up"];
+ out(n.split("").map((c,i)=>c+" — "+words[i%words.length]).join("\n"));
+}
+function startTimer(){
+ let n=Math.max(1,Math.min(600,Number(document.getElementById("seconds").value)||30));
+ let e=document.getElementById("out");e.textContent=n;
+ let t=setInterval(()=>{n--;e.textContent=n;if(n<=0){clearInterval(t);e.textContent="Time! ✨"}},1000);
+}
+function dance(){
+ document.getElementById("dance").animate(
+ [{transform:"scale(1) rotate(-8deg)"},{transform:"scale(1.3) rotate(8deg)"},{transform:"scale(1)"}],
+ {duration:700,iterations:5}
+ );
+}
+
+/* FIREWORKS VISUALS */
+const fx=document.getElementById("fireworks"),fctx=fx.getContext("2d");
+let particles=[];
+function resizeFX(){
+ fx.width=innerWidth*devicePixelRatio;fx.height=innerHeight*devicePixelRatio;
+ fx.style.width=innerWidth+"px";fx.style.height=innerHeight+"px";
+ fctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+addEventListener("resize",resizeFX);resizeFX();
+
+function burst(x,y){
+ for(let i=0;i<100;i++){
+  let a=Math.random()*Math.PI*2,s=1+Math.random()*5;
+  particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:80,max:80,h:Math.random()*360,size:1+Math.random()*3});
+ }
+}
+function animateFX(){
+ fctx.clearRect(0,0,innerWidth,innerHeight);
+ particles=particles.filter(p=>p.life>0);
+ for(let p of particles){
+  p.x+=p.vx;p.y+=p.vy;p.vy+=.035;p.vx*=.99;p.life--;
+  fctx.fillStyle=`hsla(${p.h},90%,70%,${p.life/p.max})`;
+  fctx.beginPath();fctx.arc(p.x,p.y,p.size,0,Math.PI*2);fctx.fill();
+ }
+ requestAnimationFrame(animateFX);
+}
+animateFX();
+
+function celebrate(){
+ for(let i=0;i<8;i++){
+  setTimeout(()=>burst(Math.random()*innerWidth,Math.random()*innerHeight*.65),i*240);
+ }
+ fireworkSound();
+}
+
+/* SYNTHESIZED FIREWORK SOUND */
+function fireworkSound(){
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;
+  if(!C)return;
+  const c=new C(),now=c.currentTime;
+
+  // Rising whistle
+  let whistle=c.createOscillator(),wg=c.createGain();
+  whistle.type="sine";
+  whistle.frequency.setValueAtTime(180,now);
+  whistle.frequency.exponentialRampToValueAtTime(1100,now+.42);
+  wg.gain.setValueAtTime(.0001,now);
+  wg.gain.exponentialRampToValueAtTime(.12,now+.12);
+  wg.gain.exponentialRampToValueAtTime(.0001,now+.48);
+  whistle.connect(wg);wg.connect(c.destination);
+  whistle.start(now);whistle.stop(now+.5);
+
+  // Crackling explosion noise
+  let len=Math.floor(c.sampleRate*.75);
+  let buffer=c.createBuffer(1,len,c.sampleRate);
+  let data=buffer.getChannelData(0);
+  for(let i=0;i<len;i++){
+   data[i]=(Math.random()*2-1)*Math.exp(-i/(c.sampleRate*.17));
+  }
+  let src=c.createBufferSource(),filter=c.createBiquadFilter(),gain=c.createGain();
+  src.buffer=buffer;filter.type="lowpass";filter.frequency.value=2300;
+  gain.gain.setValueAtTime(.0001,now+.36);
+  gain.gain.exponentialRampToValueAtTime(.42,now+.39);
+  gain.gain.exponentialRampToValueAtTime(.0001,now+1.12);
+  src.connect(filter);filter.connect(gain);gain.connect(c.destination);
+  src.start(now+.35);src.stop(now+1.15);
+
+  // Low boom
+  let boom=c.createOscillator(),bg=c.createGain();
+  boom.type="sine";boom.frequency.setValueAtTime(90,now+.35);
+  boom.frequency.exponentialRampToValueAtTime(32,now+.9);
+  bg.gain.setValueAtTime(.0001,now+.35);
+  bg.gain.exponentialRampToValueAtTime(.35,now+.38);
+  bg.gain.exponentialRampToValueAtTime(.0001,now+1.05);
+  boom.connect(bg);bg.connect(c.destination);
+  boom.start(now+.35);boom.stop(now+1.1);
+
+  setTimeout(()=>c.close(),1500);
+ }catch(e){console.warn("Audio unavailable",e)}
+}
+
+/* AMBIENT BACKGROUND AUDIO */
+let ambientContext=null,ambientGain=null,ambientOn=false,volume=.12;
+function toggleAmbient(){
+ const C=window.AudioContext||window.webkitAudioContext;
+ if(!C)return;
+ if(ambientOn){
+  ambientOn=false;
+  ambientGain.gain.setTargetAtTime(0,ambientContext.currentTime,.2);
+  document.getElementById("soundButton").textContent="♫ Start music";
+  return;
+ }
+ if(!ambientContext){
+  ambientContext=new C();
+  ambientGain=ambientContext.createGain();
+  ambientGain.gain.value=0;
+  ambientGain.connect(ambientContext.destination);
+  [110,164.81,220].forEach((f,i)=>{
+   let o=ambientContext.createOscillator(),g=ambientContext.createGain();
+   o.type=i===1?"sine":"triangle";o.frequency.value=f;
+   g.gain.value=[.13,.045,.025][i];
+   o.connect(g);g.connect(ambientGain);o.start();
+  });
+ }
+ ambientContext.resume();
+ ambientGain.gain.setTargetAtTime(volume,ambientContext.currentTime,.5);
+ ambientOn=true;
+ document.getElementById("soundButton").textContent="♫ Pause music";
+}
+function setVolume(v){
+ volume=Number(v);
+ if(ambientGain&&ambientOn)ambientGain.gain.setTargetAtTime(volume,ambientContext.currentTime,.1);
+}
+
+/* 4D HYPERCUBE BACKGROUND */
+const world=document.getElementById("world"),wctx=world.getContext("2d");
+let angle=0;
+function resizeWorld(){
+ world.width=innerWidth*devicePixelRatio;
+ world.height=innerHeight*devicePixelRatio;
+ world.style.width=innerWidth+"px";world.style.height=innerHeight+"px";
+ wctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+addEventListener("resize",resizeWorld);resizeWorld();
+
+const vertices=[];
+for(let i=0;i<16;i++){
+ vertices.push([(i&1)?1:-1,(i&2)?1:-1,(i&4)?1:-1,(i&8)?1:-1]);
+}
+const edges=[];
+for(let i=0;i<16;i++)for(let b=0;b<4;b++){
+ let j=i^(1<<b);if(i<j)edges.push([i,j]);
+}
+function drawWorld(){
+ wctx.clearRect(0,0,innerWidth,innerHeight);
+ angle+=.004;
+ let ca=Math.cos(angle),sa=Math.sin(angle);
+ let cb=Math.cos(angle*.73),sb=Math.sin(angle*.73);
+ let pts=vertices.map(v=>{
+  let [x,y,z,q]=v;
+  let x0=x*ca-q*sa,q0=x*sa+q*ca;
+  let y0=y*cb-z*sb,z0=y*sb+z*cb;
+  let d=3.8-q0*.5;
+  return [innerWidth*.74+(x0/d)*180,innerHeight*.43+(y0/d)*180];
+ });
+ wctx.lineWidth=1;
+ for(let [a,b] of edges){
+  wctx.strokeStyle="rgba(185,133,184,.22)";
+  wctx.beginPath();wctx.moveTo(...pts[a]);wctx.lineTo(...pts[b]);wctx.stroke();
+ }
+ for(let p of pts){
+  wctx.fillStyle="rgba(209,139,184,.45)";
+  wctx.beginPath();wctx.arc(p[0],p[1],2.3,0,Math.PI*2);wctx.fill();
+ }
+ requestAnimationFrame(drawWorld);
+}
+drawWorld();
+
+/* 3D TILT EFFECT */
+const hero=document.getElementById("hero");
+hero.addEventListener("pointermove",e=>{
+ let r=hero.getBoundingClientRect();
+ let x=(e.clientX-r.left)/r.width-.5;
+ let y=(e.clientY-r.top)/r.height-.5;
+ hero.style.transform=`perspective(900px) rotateY(${x*5}deg) rotateX(${-y*5}deg)`;
+});
+hero.addEventListener("pointerleave",()=>hero.style.transform="");
+
+go(0);
+</script>
+</body>
+</html>
